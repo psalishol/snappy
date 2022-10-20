@@ -2,6 +2,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   FlatList,
+  ImageSourcePropType,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import { runOnJS } from "react-native-reanimated";
@@ -12,26 +13,19 @@ import {
 } from "react-native-gesture-handler";
 import { Dimensions } from "react-native";
 import LocationItem from "./LocationItems";
+import { countries } from "../../data/locations";
 
 const { width, height } = Dimensions.get("window");
 
-const tempData = [
-  "green",
-  "red",
-  "yellow",
-  "cyan",
-  "grey",
-  "purple",
-  "pink",
-  "blue",
-  "magenta",
-  "orange",
-  "black",
-  "tomato",
-];
+export type DataProps = {
+  id: number;
+  name: string;
+  image: ImageSourcePropType;
+  network: string;
+};
 
 export default function CountrySelection() {
-  const [data, setData] = useState<any[]>(tempData);
+  const [data, setData] = useState<any[]>(countries);
   const [scrollX, setScrollX] = useState<number>(0);
 
   const CONTAINER_SIZE = width / 7;
@@ -108,13 +102,15 @@ export default function CountrySelection() {
         <FlatList
           bounces={false}
           horizontal
-          style={{ marginTop: 100 }}
+          showsHorizontalScrollIndicator={false}
+          style={{ marginTop: 10, marginBottom: 100 }}
           data={data}
           // extraData={data}
           ref={flatlistRef}
           onEndReached={() => {
             console.log("onEndReached");
           }}
+          keyExtractor={(item, index) => item.id}
           scrollEventThrottle={16}
           scrollEnabled={false}
           onScroll={(event) => setScrollX(event.nativeEvent.contentOffset.x)}
@@ -122,10 +118,12 @@ export default function CountrySelection() {
           renderItem={({ item, index }) => {
             return (
               <LocationItem
+                // key={index}
                 scrollX={scrollX}
                 index={index}
                 size={CONTAINER_SIZE}
-                color={item}
+                data={item}
+                // color={item}
               />
             );
           }}
