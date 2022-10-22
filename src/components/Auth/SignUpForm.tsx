@@ -1,38 +1,29 @@
 // import { Auth } from "aws-amplify";
 import { Formik } from "formik";
-import { MotiText, MotiView } from "moti";
+import { MotiView } from "moti";
 import { Dispatch, SetStateAction, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  ScrollView,
-} from "react-native";
-import { Easing } from "react-native-reanimated";
-// import { RoundedButton } from "../../GlobalComponents";
-// import DetailInputComponent from "../DetailInputComponent/DetailInputComponent";
-// import ForgotPassword from "../ForgotPassword";
+import { KeyboardAvoidingView, ScrollView } from "react-native";
 import * as yup from "yup";
-import { Colors } from "../../constants";
 import { isAndroid } from "../../constants/platform";
 import AnimatedWelcomeBack from "./AnimatedAuthHeader";
 import AuthButton from "./AuthButton";
 import DetailInputComponent from "./DetailTextInput";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import SwitchAuthentication from "./SwitchAuthentication";
 
 type LoginFormProps = {
-  email: string;
   setLoading?: Dispatch<SetStateAction<boolean>>;
+  setCurrentIndex: Dispatch<SetStateAction<number>>;
 };
 
-export default function LoginForm(props: LoginFormProps) {
-  const { email, setLoading } = props;
+export default function SignUpForm(props: LoginFormProps) {
+  const { setCurrentIndex, setLoading } = props;
   const [focused, setFocused] = useState<boolean>(false);
   const [emailFocused, setEmailFocused] = useState<boolean>(false);
+  const [nameFocused, setNameFocused] = useState<boolean>(false);
   const [passwordObscured, setPasswordObscured] = useState<boolean>(true);
 
   const passwordValidation = yup.object().shape({
+    name: yup.string().required("email is required"),
     password: yup.string().required("Password is required"),
     email: yup.string().required("email is required"),
   });
@@ -57,11 +48,10 @@ export default function LoginForm(props: LoginFormProps) {
 
   return (
     <Formik
-      initialValues={{ email: "", password: "" }}
+      initialValues={{ email: "", password: "", name: "" }}
       validationSchema={passwordValidation}
       validateOnChange={true}
       onSubmit={({ email, password }) => onSubmit(email, password)}
-      //   onSubmit={onUserLogin}
     >
       {({
         handleBlur,
@@ -79,10 +69,26 @@ export default function LoginForm(props: LoginFormProps) {
               opacity: [{ value: 1, delay: 100 }],
               translateY: [{ value: 1, damping: 300 }],
             }}
+            style={{ marginTop: -50 }}
           >
             <KeyboardAvoidingView behavior={isAndroid ? "height" : "padding"}>
               <ScrollView>
-                <AnimatedWelcomeBack subHeaderIndex={1} header="Lets Get Started" />
+                <AnimatedWelcomeBack
+                  subHeaderIndex={1}
+                  header="Lets Get Started"
+                />
+                <DetailInputComponent
+                  error={errors.name}
+                  value={values.name}
+                  handleReset={handleReset}
+                  handleBlur={handleBlur("name")}
+                  placeholder={"Name"}
+                  inputTitle={"Name"}
+                  handleChange={handleChange("name")}
+                  focused={nameFocused}
+                  passwordComponent={false}
+                  setFocused={setNameFocused}
+                />
                 <DetailInputComponent
                   error={errors.email}
                   value={values.email}
@@ -111,8 +117,12 @@ export default function LoginForm(props: LoginFormProps) {
                 />
                 <AuthButton
                   disabled={!isValid}
-                  text="Login"
+                  text="Sign Up"
                   onPress={handleSubmit}
+                />
+                <SwitchAuthentication
+                  index={1}
+                  setCurrentIndex={setCurrentIndex}
                 />
               </ScrollView>
             </KeyboardAvoidingView>
