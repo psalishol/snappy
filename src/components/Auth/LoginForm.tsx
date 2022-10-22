@@ -1,39 +1,27 @@
-// import { Auth } from "aws-amplify";
+import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
-import { MotiText, MotiView } from "moti";
+import { MotiView } from "moti";
 import { Dispatch, SetStateAction, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  ScrollView,
-} from "react-native";
-import { Easing } from "react-native-reanimated";
-// import { RoundedButton } from "../../GlobalComponents";
-// import DetailInputComponent from "../DetailInputComponent/DetailInputComponent";
-// import ForgotPassword from "../ForgotPassword";
+import { KeyboardAvoidingView, ScrollView } from "react-native";
+
 import * as yup from "yup";
-import { Colors } from "../../constants";
-import { isAndroid } from "../../constants/platform";
+import { isAndroid, isIos } from "../../constants/platform";
 import AnimatedAuthHeader from "./AnimatedAuthHeader";
-import AnimatedWelcomeBack from "./AnimatedAuthHeader";
 import AuthButton from "./AuthButton";
 import DetailInputComponent from "./DetailTextInput";
 import SwitchAuthentication from "./SwitchAuthentication";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type LoginFormProps = {
-  email: string;
   setLoading?: Dispatch<SetStateAction<boolean>>;
+  setCurrentIndex: Dispatch<SetStateAction<number>>;
 };
 
 export default function LoginForm(props: LoginFormProps) {
-  const { email, setLoading } = props;
+  const { setLoading, setCurrentIndex } = props;
   const [focused, setFocused] = useState<boolean>(false);
   const [emailFocused, setEmailFocused] = useState<boolean>(false);
   const [passwordObscured, setPasswordObscured] = useState<boolean>(true);
-
+  const navigation = useNavigation();
   const passwordValidation = yup.object().shape({
     password: yup.string().required("Password is required"),
     email: yup.string().required("email is required"),
@@ -55,6 +43,7 @@ export default function LoginForm(props: LoginFormProps) {
 
   const onSubmit = (email: string, password: string) => {
     console.log(email, password);
+    navigation.navigate("Home");
   };
 
   return (
@@ -82,7 +71,10 @@ export default function LoginForm(props: LoginFormProps) {
               translateY: [{ value: 1, damping: 300 }],
             }}
           >
-            <KeyboardAvoidingView behavior={isAndroid ? "height" : "padding"}>
+            <KeyboardAvoidingView
+              keyboardVerticalOffset={isIos ? -40 : 0}
+              behavior={isAndroid ? "height" : "padding"}
+            >
               <ScrollView>
                 <AnimatedAuthHeader subHeaderIndex={0} header="Welcome Back" />
                 <DetailInputComponent
@@ -114,9 +106,12 @@ export default function LoginForm(props: LoginFormProps) {
                 <AuthButton
                   disabled={!isValid}
                   text="Login"
-                  onPress={handleSubmit}
+                  onPress={() => handleSubmit()}
                 />
-                <SwitchAuthentication index={0} />
+                <SwitchAuthentication
+                  setCurrentIndex={setCurrentIndex}
+                  index={0}
+                />
               </ScrollView>
             </KeyboardAvoidingView>
           </MotiView>
@@ -125,5 +120,3 @@ export default function LoginForm(props: LoginFormProps) {
     </Formik>
   );
 }
-
-
