@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Colors } from "../../constants";
+import { size } from "../../utils/dimensionGetter";
 
 interface SwitchAuthenticationProps {
   index: number;
@@ -34,6 +35,6 @@ const styles = StyleSheet.create({
   text: {
     color: Colors.PRIMARY_WHITE_SHADOW_COLOR,
     fontWeight: "bold",
-    fontSize: 12,
+    fontSize: size(12),
   },
 });

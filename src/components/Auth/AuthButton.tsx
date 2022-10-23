@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { Colors } from "../../constants";
+import { size } from "../../utils/dimensionGetter";
 
 interface AuthButtonProps {
   onPress?: () => void;
@@ -24,10 +25,10 @@ export default function AuthButton(props: AuthButtonProps) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
-    margin: 20,
-    marginTop: 40,
-    borderRadius: 30,
+    height: size(50),
+    margin: size(20),
+    marginTop: size(40),
+    borderRadius: size(30),
     backgroundColor: Colors.PRIMARY_HIGHLIGHT_COLOR,
     justifyContent: "center",
     alignItems: "center",
@@ -35,6 +36,6 @@ const styles = StyleSheet.create({
   text: {
     color: Colors.PRIMARY_WHITE_SHADOW_COLOR,
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: size(18),
   },
 });

@@ -6,6 +6,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { screenWidth } from "../../constants/screenDimensions";
+import { size } from "../../utils/dimensionGetter";
 
 interface AuthScrollViewProps {
   index: number;
@@ -34,7 +35,9 @@ const AuthScrollView = ({ index, children }: AuthScrollViewProps) => {
     >
       {Children.map(children, (child) => {
         return (
-          <View style={{ width: screenWidth, marginTop: 300 }}>{child}</View>
+          <View style={{ width: screenWidth, marginTop: size(300) }}>
+            {child}
+          </View>
         );
       })}
     </Animated.View>

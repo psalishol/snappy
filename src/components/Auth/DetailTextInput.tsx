@@ -8,6 +8,7 @@ import {
 import React from "react";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { Colors } from "../../constants";
+import { size } from "../../utils/dimensionGetter";
 
 export type DetailInputComponentProps = {
   inputValue?: string;
@@ -37,7 +38,7 @@ const DetailInputComponent = (props: DetailInputComponentProps) => {
   const handleReset = () => {};
 
   return (
-    <View style={{ marginTop: 25 }}>
+    <View style={{ marginTop: size(25) }}>
       <View>
         <Text style={styles(props.focused).title}>
           {props.inputTitle.toUpperCase()}
@@ -61,12 +62,12 @@ const DetailInputComponent = (props: DetailInputComponentProps) => {
         {!props.passwordComponent ? (
           props.value ? (
             <TouchableOpacity>
-              <MaterialIcons name="cancel" size={24} color="#252932" />
+              <MaterialIcons name="cancel" size={size(24)} color="#252932" />
             </TouchableOpacity>
           ) : null
         ) : (
           <TouchableOpacity onPress={() => props.setObscured!(!props.obscured)}>
-            <AntDesign name="eye" size={24} color="#252932" />
+            <AntDesign name="eye" size={size(24)} color="#252932" />
           </TouchableOpacity>
         )}
       </View>
@@ -80,13 +81,13 @@ const styles = (focused: boolean) =>
     title: {
       color: "#3A3C48",
       fontWeight: "bold",
-      marginHorizontal: 20,
-      fontSize: 12,
-      marginBottom: 5,
+      marginHorizontal: size(20),
+      fontSize: size(12),
+      marginBottom: size(5),
     },
     input: {
-      paddingVertical: 12,
-      font: 16,
+      paddingVertical: size(12),
+      font: size(16),
       fontWeight: "bold",
       color: "white",
       width: "90%",
@@ -94,8 +95,8 @@ const styles = (focused: boolean) =>
     inputContainer: {
       flexDirection: "row",
       borderBottomColor: focused ? "#BEF0B2" : "#3A3C48",
-      borderBottomWidth: 2,
-      marginHorizontal: 20,
+      borderBottomWidth: size(2),
+      marginHorizontal: size(20),
       justifyContent: "space-between",
       alignItems: "center",
     },

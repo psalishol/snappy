@@ -6,6 +6,7 @@ import { KeyboardAvoidingView, ScrollView } from "react-native";
 
 import * as yup from "yup";
 import { isAndroid, isIos } from "../../constants/platform";
+import { size } from "../../utils/dimensionGetter";
 import AnimatedAuthHeader from "./AnimatedAuthHeader";
 import AuthButton from "./AuthButton";
 import DetailInputComponent from "./DetailTextInput";
@@ -65,7 +66,7 @@ export default function LoginForm(props: LoginFormProps) {
       }) => {
         return (
           <MotiView
-            from={{ opacity: 0, translateY: 500 }}
+            from={{ opacity: 0, translateY: size(500) }}
             animate={{
               opacity: [{ value: 1, delay: 100 }],
               translateY: [{ value: 1, damping: 300 }],
